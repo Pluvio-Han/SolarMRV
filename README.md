@@ -132,11 +132,11 @@ graph LR
 
 **界面一：非对称加密下的无痕注册接入**
 通过本地加密算力生成全新的身份标识。
-![Create Wallet Flow](/Users/evanhan/.gemini/antigravity/brain/751a1504-dfcb-4a0e-b973-d2c16e782820/explicit_registration_flow_1771774249831.webp)
+![Create Wallet Flow](assets/explicit_registration_flow.webp)
 
 **界面二：环境确权与数字资产监控看板**
 用户成功登录后，即可在看板获取硬件传感回传的实时产生功率、动态绘制的发电量折线网络，以及对应的 SLG 与 mUSD 实时价值资产沉淀。同时页面右侧嵌入了允许物理资产积分流动兑现的内部 DEX 兑换模块。
-![Auth Unlocked Dashboard](/Users/evanhan/.gemini/antigravity/brain/751a1504-dfcb-4a0e-b973-d2c16e782820/unlocked_dashboard_full_1771773866359.png)
+![Auth Unlocked Dashboard](assets/unlocked_dashboard_full.png)
 
 ---
 
@@ -155,7 +155,7 @@ graph LR
 1.  **边缘端采集：** 零错包地提取了完整物理环境充放电周期。
 2.  **资产化铸造：** 所有增量信息均无毫秒差错地触发了链下预言机到链上资产的等额积分铸币行为，并且分布式节点的交易哈希不可逆、不丢失。
 
-![8-Hour Run Data](/Users/evanhan/.gemini/antigravity/brain/751a1504-dfcb-4a0e-b973-d2c16e782820/solar_chart_20260219.png)
+![8-Hour Run Data](assets/solar_chart_20260219.png)
 *(图注：2026-02-19 所完成的真实光伏系统自然充放电周期耐久测试监控图，清晰记录了光照与功率在负载干预下的连续数学变化规律。)*
 
 ---
