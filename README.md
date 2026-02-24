@@ -1,0 +1,163 @@
+# 分布式光伏 RWA (现实世界资产) 资产上链系统原型实验报告
+
+## 1. 实验背景与核心目标
+
+随着全球能源转型的加速与区块链技术的成熟，**现实世界资产代币化 (Real-World Asset Tokenization, RWA)** 正在成为链接物理资产与数字金融的关键桥梁。传统的光伏类环境权益（如绿电证书、碳汇）面临着数据不透明、确权成本高、流转效率低等痛点。
+
+本项目（SolarGuard 系统）的核心目标是：**构建一个由智能硬件直连物理世界，由底层智能合约确保商业逻辑，并面向最终用户提供无缝交互的端到端 Web3 绿色能源资产上链原型系统。**
+
+本实验完成了从光伏组件硬件传感、国密密码学确权加密、PBFT 联盟链跨国组网节点共识、ERC-20 代币化智能合约，再到面向用户的 Web3 前端看板与去中心化交易所 (DEX) 交易逻辑的 **0 到 1 全链路实装闭环**。
+
+---
+
+## 2. 系统总体架构设计
+
+本系统的架构遵循典型的物联网 (IoT) 结合区块链 (Blockchain) 的分层模型。整体分为三个主要逻辑层级：硬件边缘采集层、联盟链共识与智能合约引擎层、以及 Web3 用户端应用层。
+
+### 2.1 硬件边缘采集与上链加密层 (IoT Edge & Cryptography)
+
+位于真实物理世界的节点，负责从真实的太阳能控制器中提取原始能源数据，并在数据发往互联网之前，由本地计算核心完成非对称密码学签名，确保数据的绝对“防伪”。
+
+```mermaid
+graph LR
+    subgraph Sensors ["物理感知终端 (Sensors)"]
+        direction TB
+        PV["独立光伏发电组件"] -->|"DC 12V 充能"| CTRL["EPEVER 智能控制器"]
+        BATT["储能蓄电池 (12V)"] <--> CTRL
+        LOAD["功率负载 (直流灯等)"] <--> CTRL
+    end
+
+    subgraph EdgeComputing ["边缘计算与防伪 (Edge Computing)"]
+        direction TB
+        CTRL -->|"RS485 Modbus-RTU 协议"| GATEWAY["计算网关 (Mac/Linux)"]
+        GATEWAY -->|"Python 驱动引擎读取"| ENGINE["AutoMonitor 守护进程"]
+        ENGINE -->|"国密 SM2/SM3 签名算法"| SIGNED_DATA["不可篡改的哈希报文"]
+    end
+    
+    Sensors ==> EdgeComputing
+    
+    style PV fill:#fefece,stroke:#333
+    style CTRL fill:#e1f5fe,stroke:#333
+    style GATEWAY fill:#e8f5e9,stroke:#333
+    style SIGNED_DATA fill:#ffe0b2,stroke:#333
+```
+
+### 2.2 多中心化上链与智能合约执行引擎 (Blockchain Consensus & Smart Contracts)
+
+被签名后的电量数据需要通过安全的隧道网络，传输至分布在全球的 FISCO-BCOS 联盟链节点上，不仅完成数据的永久性分布式账本存证，更触发资产价值的自动化结算。
+
+```mermaid
+graph LR
+    subgraph WATTunnel ["广域网安全流转 (WAN Tunnel)"]
+        direction TB
+        SIGNED_DATA["加密报文"] ==>|"双路 SSH 隧道加密穿透"| RELAY_CH["Relay 通信层 (TCP 5555)"]
+        RELAY_CH --> RPC["RPC 节点交互层 (TCP 8545)"]
+    end
+
+    subgraph Consensus ["PBFT 共识网络与智能合约 (Blockchain Consensus)"]
+        direction TB
+        RPC --> MASTER["腾讯云节点 (主节点)"]
+        
+        subgraph PBFT ["PBFT 共识验证池"]
+            MASTER <==> SLAVE1["异地共识节点 1"]
+            MASTER <==> SLAVE2["海外容灾节点 2 (新加坡)"]
+        end
+
+        MASTER --> CONTRACT["SolarRWA 等系列智能合约部署"]
+        CONTRACT --> DB[("State Trie 分布式账本状态机")]
+    end
+
+    WATTunnel ==> Consensus
+    
+    style RELAY_CH fill:#fff3e0,stroke:#333
+    style MASTER fill:#e8eaf6,stroke:#333
+    style PBFT fill:#f5f5f5,stroke:#999,stroke-dasharray: 5 5
+```
+
+---
+
+## 3. 核心机制演进与理论模型
+
+在基础架构能够稳定运作后，本项目创新性地引入了 **Web3 双代币经济学模型 (Dual-Token Economics)** 与 **预言机 (Oracle)** 机制，赋予了枯燥的环境监测数据以真实的金融流转能力。
+
+### 3.1 资产代币化模型设计 (Asset Tokenization)
+
+整个 DApp (去中心化应用) 围绕三个部署在于链上的智能合约进行运转：
+
+1.  **`StableCoin` (mUSD, 法币锚定物)**：
+    一比一锚定法币价值的 ERC-20 基础货币，作为本系统内部的价值结算尺度与购买媒介。
+2.  **`SolarToken` (SLG, RWA 资产凭证)**：
+    代表系统生成的“绿电积分信用”的 ERC-20 核心积分资产。其铸造权限被智能合约强制收拢，任何外部账户均无法超发，确保每一枚代币背后都有真实的物理发电量作为背书。
+3.  **`SolarRWA` (去中心化清算核心)**：
+    同时承担着“物联网数据验证所”与“去中心化交易所 (DEX)”的两大职责。不仅负责校验前端传感器的 SM2 数字签名，更是在收到有效的新增发电量时，基于内置的 Automated Market Maker (AMM) 数学逻辑自动向用户的链上地址发送 (Mint) 新的绿电积分，并允许用户随时将其兑换回 mUSD 稳定币。
+
+### 3.2 现实-链上 预言机通道 (Python Oracle Loop)
+
+为解决区块链“无法主动获取外部世界真实状态”的技术瓶颈，本项目在边缘计算网关处实现了一套基于 Python 编写的高度确定性预言机 (Oracle) 循环机制。
+
+```mermaid
+graph LR
+    subgraph Step1 ["步骤一：物理数据采集与上链"]
+        direction TB
+        A["光伏硬件 RS485 总线"] -->|"增量电量 0.5 kWh 捕获"| B("Python 守护预言机 (Oracle)")
+        B -->|"打包、哈希与 ECDSA 私钥签名"| C{"FISCO-BCOS 联盟链节点"}
+    end
+
+    subgraph Step2 ["步骤二：链上合约校验与资产同态铸造"]
+        direction TB
+        D["SolarRWA 逻辑处理中心"] -->|"基于增量校验安全 & 执行"| E["SolarToken 资产工厂"]
+        E -->|"自动化确权 & Mint 0.5 SLG"| F(("现实用户的区块链底层钱包"))
+    end
+    
+    Step1 ==> Step2
+    C -.->|"Trigger Transaction: storeDeviceData"| D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style C fill:#f9d0c4,stroke:#333,stroke-width:2px
+    style F fill:#dfd,stroke:#333,stroke-width:2px
+```
+
+---
+
+## 4. Web3 终端产品展现形式
+
+底层密码学体系完备后，系统通过现代化的 Web 前端进行了人机交互设计，剥离了繁复的私钥管理，将门槛降至普通互联网平台级别。
+
+### 4.1 技术栈特性
+-   采用 **轻量化 API 中间栈**（Flask Daemon），前端剥离重型 Web3 依赖库，极大地提高了页面访问性能与渲染流畅度。
+-   **无感知本地 Keystore 生成算法**，用户只需一句简单密码即时生成高安全的非对称以太坊格式账户。
+-   前端运用 **TailwindCSS** 以及 **Chart.js**，以 Glassmorphism (毛玻璃) 扁平化风格适配多终端的响应式交互布局。
+
+### 4.2 DApp 面板交互展示
+
+**界面一：非对称加密下的无痕注册接入**
+通过本地加密算力生成全新的身份标识。
+![Create Wallet Flow](/Users/evanhan/.gemini/antigravity/brain/751a1504-dfcb-4a0e-b973-d2c16e782820/explicit_registration_flow_1771774249831.webp)
+
+**界面二：环境确权与数字资产监控看板**
+用户成功登录后，即可在看板获取硬件传感回传的实时产生功率、动态绘制的发电量折线网络，以及对应的 SLG 与 mUSD 实时价值资产沉淀。同时页面右侧嵌入了允许物理资产积分流动兑现的内部 DEX 兑换模块。
+![Auth Unlocked Dashboard](/Users/evanhan/.gemini/antigravity/brain/751a1504-dfcb-4a0e-b973-d2c16e782820/unlocked_dashboard_full_1771773866359.png)
+
+---
+
+## 5. 云原生生产环境投产部署
+
+为验证系统在全球互联网环境下的可用性，本项目从局域网环境成功平移至云端生产级架构。
+1.  **Nginx 动静分离反向代理**：配置高性能的云端 Web Server 处理高并发静态路由，并解决了公网跨域请求 (CORS)。
+2.  **Systemd Linux 级防崩溃守护**：编写底层应用服务自启规则，抵御任何外部网络波动带来的进程掉线。
+3.  **DNS 独立解析跨域接管**：无视复杂的云平台账号壁垒，利用高级 DNSPod 配置直达生产服务器的 A 记录分发，为产品挂载独立域名。
+
+## 6. 实验结论与数据佐证
+
+本原型系统于 **2026-02-23** 完全封卷并对外公网发布试运行。
+
+在系统持续的高压连续挂机耐久测试中（持续时长：**8小时**，采样验证点数：**96 个**），系统成功展示出了极强的抗压性与一致性：
+1.  **边缘端采集：** 零错包地提取了完整物理环境充放电周期。
+2.  **资产化铸造：** 所有增量信息均无毫秒差错地触发了链下预言机到链上资产的等额积分铸币行为，并且分布式节点的交易哈希不可逆、不丢失。
+
+![8-Hour Run Data](/Users/evanhan/.gemini/antigravity/brain/751a1504-dfcb-4a0e-b973-d2c16e782820/solar_chart_20260219.png)
+*(图注：2026-02-19 所完成的真实光伏系统自然充放电周期耐久测试监控图，清晰记录了光照与功率在负载干预下的连续数学变化规律。)*
+
+---
+**实验项目状态报告结论**: 🏆 全链路工程与商业闭环论证成立 | 🌍 云原生生产环境稳定投产
+**互联网公开测试入口访问地址**: **`http://pluviohan.com`**

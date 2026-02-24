@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>光伏 RWA 项目总结 - Walkthrough</title>
+    <!-- 使用 GitHub 风格的 Markdown CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css">
+    <style>
+        body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
+        @media (max-width: 767px) {
+            body { padding: 15px; }
+        }
+        .mermaid {
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        /* 打印优化 */
+        @media print {
+            .no-print { display: none; }
+            body { padding: 0; }
+        }
+    </style>
+</head>
+<body class="markdown-body">
+    <div class="no-print" style="background: #fffbdd; padding: 10px; border: 1px solid #d4a017; margin-bottom: 20px; border-radius: 5px;">
+        💡 <b>导出提示：</b> 请在浏览器中使用 <b>右键 -> 打印 (Ctrl+P / Cmd+P)</b>，并将目标设置为 <b>「另存为 PDF」</b>。
+    </div>
+
+    <!-- 这里的 Markdown 内容会被脚本渲染 -->
+    <div id="content">加载中...</div>
+
+    <!-- 引入 Markdown 解析器和 Mermaid 渲染器 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    
+    <script>
+        // 初始化 Mermaid
+        mermaid.initialize({ startOnLoad: false, theme: 'default' });
+
+        // 获取 Markdown 文件内容（通过 Fetch 或直接嵌入）
+        const mdContent = `
+# ☀️ 光伏 RWA 物联网上链系统 - 技术架构与实现
+
+本项目构建了一套完整的 **"端-云-链"** 协同系统，实现光伏板数据的实时采集、国密签名与区块链存证。
+
+## 🏗️ 系统架构
+
+\`\`\`mermaid
+graph TD
+    subgraph "Edge (Mac IoT)"
+        PV["光伏板/控制器"] -->|"Modbus RTU"| Monitor["solar_monitor.py"]
+        Monitor -->|"SM2 签名"| Auto["auto_monitor.py"]
+        Auto -->|"CSV"| LocalStorage["本地数据"]
+        Auto -->|"Telegram"| User["用户手机"]
+    end
+
+    subgraph "Cloud (Ubuntu x3)"
+        Auto -->|"SSH Tunnel (8545/5555)"| Relay["Persistent Relay"]
+        Relay -->|"Console Call"| Chain["FISCO-BCOS 联盟链"]
+        
+        Gwen["Gwen (CN)"] --- Miles["Miles (CN)"]
+        Miles --- Peter["Peter (SG)"]
+        Peter --- Gwen
+    end
+
+    subgraph "Smart Contract"
+        Chain --> Contract["SolarDataStore.sol"]
+        Contract -->|"Event"| State["链上状态"]
+    end
+\`\`\`
+
+## ✅ 核心模块
+
+### 1. **端侧采集 (IoT Edge)**
+- **硬件**: EPEVER 控制器 + Mac mini via USB/Modbus。
+- **采集**: \`solar_monitor.py\` 读取电压、功率、SOC、累计发电量。
+- **安全**: 集成 **国密 SM2** 算法，对每条数据进行数字签名 (\`sign_payload\`)。
+- **自动化**: \`auto_monitor.py\` 每 5 分钟自动采集，本地 CSV 备份 + 自动重连。
+
+### 2. **区块链网络 (Consortium Chain)**
+- **底链**: FISCO-BCOS v2.11 (PBFT 共识)。
+- **部署**: 跨地域 3 机构 6 节点组网。
+    - **Gwen**: 腾讯云 (Master, JSON-RPC 入口)
+    - **Miles**: 腾讯云 (共识节点)
+    - **Peter**: DigitalOcean 新加坡 (共识节点)
+- **状态**: 区块高度同步，PBFT 共识正常。
+
+### 3. **智能合约 (Smart Contract)**
+- **合约**: \`SolarDataStore.sol\`
+- **功能**: 
+    - \`storeData()\`: 存储功率、电压、SOC、累计发电及 **SM2 签名**。
+    - \`getData()\`: 按 ID 查询历史数据。
+    - \`getLatestData()\`: 获取最新状态。
+    - 数据自动倍率还原 (链上存整型 x100)。
+
+### 4. **端云链接 (Data Bridge)**
+- **SDK**: \`chain_client.py\`
+- **通信**: **双路 SSH 隧道** 穿透内网。
+    - \`L:8545\`: 用于 JSON-RPC 极速读取 (查询链高/数据)。
+    - \`L:5555\`: 用于 Relay 服务极速写入 (调用控制台，<2s 上链)。
+- **优化**: 
+    - 部署了 \`chain_relay.py\` 常驻进程，避免 JVM 冷启动。
+    - 自动处理网络波动与重连。
+
+### 5. **监控通知 (Notification)**
+- **渠道**: Telegram Bot。
+- **内容**: 实时功率图表 + 电池 SOC + **链上总记录数**。
+- **频率**: 每小时整点推送，异常即时报警。
+
+## 📊 数据流验证
+
+1. **采集**: \`PV Power: 123.45W\`
+2. **签名**: \`Sig: 30450221...\` (本地生成)
+3. **上链**: 交易 \`0x73fc...\` 写入区块 7
+4. **验证**: 
+    - Mac 端日志: \`⛓️ 数据已上链! TX: 0x73fc...\`
+    - Telegram 通知: \`⛓️ 链上记录: 7 条\`
+
+## 🏁 总结
+这是一套**闭环、可信、抗审查**的物联网数据存证系统。数据从源头（光伏板）产生后，立刻被签名并永久锁定在分布式账本中，任何人（包括管理员）都无法在事后篡改历史发电数据。
+        `;
+
+        // 渲染 Markdown
+        document.getElementById('content').innerHTML = marked.parse(mdContent);
+
+        // 查找所有代码块并处理 Mermaid
+        const codeBlocks = document.querySelectorAll('pre code.language-mermaid');
+        codeBlocks.forEach((block, i) => {
+            const pre = block.parentElement;
+            const mermaidDiv = document.createElement('div');
+            mermaidDiv.className = 'mermaid';
+            mermaidDiv.innerHTML = block.textContent;
+            pre.replaceWith(mermaidDiv);
+        });
+
+        // 渲染 Mermaid 图表
+        mermaid.run();
+    </script>
+</body>
+</html>
+        

@@ -1,0 +1,3 @@
+Time,PV_Power_W,PV_Voltage_V,Batt_SOC_Pct,Batt_Voltage_V,Total_Energy_kWh
+2026-02-19 11:07:42.061369,5.1,17.81,96.0,13.8,0.08
+2026-02-19 11:12:46.862316,5.65,18.22,96.0,13.8,0.08

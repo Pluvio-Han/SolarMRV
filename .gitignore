@@ -1,0 +1,26 @@
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Environment Variables
+.env_file
+
+# Logs
+*.log
+logs/
+
+# Secrets (DO NOT PUSH KEYS)
+keystore/
+*.json.bak
+
+# Mac DS_Store
+.DS_Store
