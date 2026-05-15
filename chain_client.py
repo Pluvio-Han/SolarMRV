@@ -5,6 +5,14 @@ chain_client.py - FISCO-BCOS 链客户端
 写入: 通过 SSH 调用 Gwen 上的控制台命令 (可靠、已验证)
 读取: 通过 SSH 隧道 + JSON-RPC (快速、轻量)
 """
+
+# ============================================================================
+# DEPRECATED 模块说明（2026-02 合规重构后）
+# 本文件下方所有标注 "# DEPRECATED 2026-02" 的函数均已停用，
+# 原属早期 RWA / DEX 原型阶段功能（如 mint_token 等调用 SolarRWA 合约的操作）。
+# 当前项目定位为"分布式光伏 MRV 可信数据底座"，仅保留 SolarDataStore 合约
+# 相关的数据存证与链上查询功能。停用代码仅作历史留痕。
+# ============================================================================
 import json
 import os
 import time
@@ -188,56 +196,56 @@ class ChainClient:
         
         raise Exception(last_error)
 
-    def mint_token(self, device_id, total_energy):
-        """
-        向 SolarRWA 合约报告最新累计发电量，如果存在增量则由 RWA 合约自动结算并铸造绿电代币给用户。
-        :param device_id: 设备唯一ID (例如 NODE_001)
-        :param total_energy: 当前累计发电量 (Float, 比如 1.25 kWh)
-        :return: 布尔值 (是否成功), TX Hash
-        """
-        payload = {
-            "action": "mint_token",
-            "contractAddr": config.SOLAR_RWA_ADDR,
-            "deviceId": device_id,
-            "totalEnergy": int(total_energy * 100) # 放大 100 倍与上链数据精度对齐
-        }
-        
-        last_error = None
-        for attempt in range(3):
-            try:
-                # 检查隧道端口是否通畅
-                if not self._check_port(self.relay_port):
-                    print("⚠️ 检测到隧道断开，尝试重连...")
-                    if not self._reconnect_tunnel():
-                        raise ConnectionError("隧道重连失败")
-
-                resp = requests.post(self.relay_url, json=payload, timeout=45,
-                                     proxies={"http": None, "https": None})
-                result = resp.json()
-                
-                if result.get("success"):
-                    tx_hash = result.get("tx_hash", "unknown")
-                    print(f"💰  绿电铸币成功! TX: {tx_hash[:18]}... (Relay)")
-                    return True, tx_hash
-                else:
-                    output_str = result.get('output', '')
-                    if "Transaction receipt timeout" in output_str:
-                        return True, "delayed_minting_tx"
-                    
-                    last_error = f"Mint Error: {result.get('error')} | Output: {output_str[:100]}"
-                    if attempt < 2:
-                        print(f"  ⚠️ 第{attempt+1}次尝试失败，{3}秒后重试...")
-                        time.sleep(3)
-                    
-            except (requests.exceptions.RequestException, ConnectionError) as e:
-                last_error = f"Relay 连接失败: {e}"
-                if attempt < 2:
-                    print(f"  ⚠️ 连接异常，尝试重连隧道并重试...")
-                    self._reconnect_tunnel()
-                    time.sleep(3)
-        
-        print(f"❌ 绿电铸币失败: {last_error}")
-        return False, None
+    # DEPRECATED 2026-02: 合规重构，已停用。原属早期 RWA / DEX 模块，不再对外提供。
+    # def mint_token(self, device_id, total_energy):
+    #     """
+    #     向 SolarRWA 合约报告最新累计发电量，如果存在增量则由 RWA 合约自动结算并铸造绿电代币给用户。
+    #     :param device_id: 设备唯一ID (例如 NODE_001)
+    #     :param total_energy: 当前累计发电量 (Float, 比如 1.25 kWh)
+    #     :return: 布尔值 (是否成功), TX Hash
+    #     """
+    #     payload = {
+    #         "action": "mint_token",
+    #         "contractAddr": config.SOLAR_RWA_ADDR,
+    #         "deviceId": device_id,
+    #         "totalEnergy": int(total_energy * 100)
+    #     }
+    #
+    #     last_error = None
+    #     for attempt in range(3):
+    #         try:
+    #             if not self._check_port(self.relay_port):
+    #                 print("⚠️ 检测到隧道断开，尝试重连...")
+    #                 if not self._reconnect_tunnel():
+    #                     raise ConnectionError("隧道重连失败")
+    #
+    #             resp = requests.post(self.relay_url, json=payload, timeout=45,
+    #                                  proxies={"http": None, "https": None})
+    #             result = resp.json()
+    #
+    #             if result.get("success"):
+    #                 tx_hash = result.get("tx_hash", "unknown")
+    #                 print(f"💰  绿电铸币成功! TX: {tx_hash[:18]}... (Relay)")
+    #                 return True, tx_hash
+    #             else:
+    #                 output_str = result.get('output', '')
+    #                 if "Transaction receipt timeout" in output_str:
+    #                     return True, "delayed_minting_tx"
+    #
+    #                 last_error = f"Mint Error: {result.get('error')} | Output: {output_str[:100]}"
+    #                 if attempt < 2:
+    #                     print(f"  ⚠️ 第{attempt+1}次尝试失败，{3}秒后重试...")
+    #                     time.sleep(3)
+    #
+    #         except (requests.exceptions.RequestException, ConnectionError) as e:
+    #             last_error = f"Relay 连接失败: {e}"
+    #             if attempt < 2:
+    #                 print(f"  ⚠️ 连接异常，尝试重连隧道并重试...")
+    #                 self._reconnect_tunnel()
+    #                 time.sleep(3)
+    #
+    #     print(f"❌ 绿电铸币失败: {last_error}")
+    #     return False, None
 
     # ============================================================
     #                    读取函数 (通过 JSON-RPC)

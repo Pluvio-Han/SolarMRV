@@ -2,6 +2,14 @@
 chain_relay.py - 高性能交易中继 (Persistent Console)
 保持 FISCO-BCOS 控制台进程常驻，避免 JVM 冷启动开销
 """
+
+# ============================================================================
+# DEPRECATED 模块说明（2026-02 合规重构后）
+# 本文件下方所有标注 "# DEPRECATED 2026-02" 的代码块均已停用，
+# 原属早期 RWA / DEX 原型阶段功能（如 mint_token 调用 SolarRWA 合约）。
+# 当前项目定位为"分布式光伏 MRV 可信数据底座"，仅保留 store_data
+# （SolarDataStore 合约数据存证）相关功能。停用代码仅作历史留痕。
+# ============================================================================
 import json
 import sys
 import time
@@ -127,27 +135,28 @@ class RelayHandler(BaseHTTPRequestHandler):
                 
                 resp = {"success": success, "tx_hash": tx_hash, "output": raw_output[-300:]}
 
-            elif action == "mint_token":
-                contract_addr = body.get("contractAddr", "")
-                device_id = body.get("deviceId", "NODE_001")
-                total_energy = body.get("totalEnergy", 0)
-                
-                if not contract_addr:
-                    resp = {"success": False, "error": "Missing contractAddr for SolarRWA"}
-                else:
-                    cmd = f'call SolarRWA {contract_addr} storeDeviceData "{device_id}" {total_energy}'
-                    raw_output = console.execute(cmd)
-                    
-                    success = "transaction executed successfully" in raw_output
-                    if "receipt timeout" in raw_output:
-                        success = False
-
-                    tx_hash = ""
-                    for line in raw_output.split('\n'):
-                        if 'transaction hash' in line:
-                            tx_hash = line.split(':')[-1].strip()
-                    
-                    resp = {"success": success, "tx_hash": tx_hash, "output": raw_output[-300:]}
+            # DEPRECATED 2026-02: 合规重构，已停用。原属早期 RWA / DEX 模块，不再对外提供。
+            # elif action == "mint_token":
+            #     contract_addr = body.get("contractAddr", "")
+            #     device_id = body.get("deviceId", "NODE_001")
+            #     total_energy = body.get("totalEnergy", 0)
+            #
+            #     if not contract_addr:
+            #         resp = {"success": False, "error": "Missing contractAddr for SolarRWA"}
+            #     else:
+            #         cmd = f'call SolarRWA {contract_addr} storeDeviceData "{device_id}" {total_energy}'
+            #         raw_output = console.execute(cmd)
+            #
+            #         success = "transaction executed successfully" in raw_output
+            #         if "receipt timeout" in raw_output:
+            #             success = False
+            #
+            #         tx_hash = ""
+            #         for line in raw_output.split('\n'):
+            #             if 'transaction hash' in line:
+            #                 tx_hash = line.split(':')[-1].strip()
+            #
+            #         resp = {"success": success, "tx_hash": tx_hash, "output": raw_output[-300:]}
             
             elif action == "ping":
                 resp = {"success": True, "status": "active"}

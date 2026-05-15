@@ -406,7 +406,7 @@
 
 可直接引用：
 
-- [GitHub 仓库](https://github.com/Pluvio-Han/SolarGuard-RWA-System)
+- [GitHub 仓库](https://github.com/Pluvio-Han/SolarMRV)
 - [项目总结报告内容](/Users/evanhan/项目/光伏项目/项目总结报告内容)
 - [政策资料](/Users/evanhan/项目/光伏项目/政策资料)
 

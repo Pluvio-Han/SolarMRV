@@ -56,10 +56,10 @@ GWEN_RELAY_PORT = 5555
 # 旧版纯数据上链合约 (SolarDataStore)
 CONTRACT_ADDRESS = os.environ.get("CHAIN_CONTRACT", "0x075d963d8567395f024da3edce3d63bd2f5f4be3")
 
-# Phase 2 资产化代币合约
-SOLAR_TOKEN_ADDR = os.environ.get("SOLAR_TOKEN_ADDR", "0x5644c316cca1fda89640ce576613b9f6044e5d48")
-STABLE_COIN_ADDR = os.environ.get("STABLE_COIN_ADDR", "0x3709d04c3a05b15cceb32d6c0ae251e5c99a2f33")
-SOLAR_RWA_ADDR = os.environ.get("SOLAR_RWA_ADDR", "0x6b48181d6edeeccbc1143f276f5e60cdd90421b8")
+# Phase 2 资产化代币合约 — DEPRECATED 2026-02: 合规重构停用
+# SOLAR_TOKEN_ADDR = os.environ.get("SOLAR_TOKEN_ADDR", "0x5644c316cca1fda89640ce576613b9f6044e5d48")    # DEPRECATED 2026-02: 合规重构停用
+# STABLE_COIN_ADDR = os.environ.get("STABLE_COIN_ADDR", "0x3709d04c3a05b15cceb32d6c0ae251e5c99a2f33")    # DEPRECATED 2026-02: 合规重构停用
+# SOLAR_RWA_ADDR = os.environ.get("SOLAR_RWA_ADDR", "0x6b48181d6edeeccbc1143f276f5e60cdd90421b8")          # DEPRECATED 2026-02: 合规重构停用
 
 GROUP_ID = 1
 SENDER_ADDRESS = "0x4a8d475c38c355734dcb786cd9be43773939b793"

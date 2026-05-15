@@ -138,14 +138,14 @@ def main():
                             signature=sig
                         )
                         
-                        # ----- 新增: Phase 2 预言机自动铸币 -----
-                        print("🤖 触发预言机: 正在向 RWA 合约同步电量并尝试铸造绿电代币...")
-                        mint_success, mint_tx = chain.mint_token(
-                            device_id="NODE_001",
-                            total_energy=raw_data.get('total_energy_generated', 0)
-                        )
-                        if mint_success:
-                            print(f"✅ RWA 结算完成, Token Minting 触发成功!")
+                        # DEPRECATED 2026-02: 合规重构，已停用。原属早期 RWA / DEX 模块，不再对外提供。
+                        # print("🤖 触发预言机: 正在向 RWA 合约同步电量并尝试铸造绿电代币...")
+                        # mint_success, mint_tx = chain.mint_token(
+                        #     device_id="NODE_001",
+                        #     total_energy=raw_data.get('total_energy_generated', 0)
+                        # )
+                        # if mint_success:
+                        #     print(f"✅ RWA 结算完成, Token Minting 触发成功!")
                         # ----------------------------------------
 
                         # 更新链上记录数用于通知

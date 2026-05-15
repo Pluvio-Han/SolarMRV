@@ -1,8 +1,16 @@
 """
-api/app.py - Web3 太阳能仪表盘后端 (API 服务)
+api/app.py - SolarMRV 可视化看板后端 (API 服务)
 使用 Flask 将基于 FISCO-BCOS 的 chain_client 和 wallet_manager 接口暴露为 RESTFUL API。
-供基于 Tailwind 的 HTML 前端调用。
+供 MRV 可视化看板前端调用。
 """
+
+# ============================================================================
+# DEPRECATED 模块说明（2026-02 合规重构后）
+# 本文件下方所有标注 "# DEPRECATED 2026-02" 的函数与路由均已停用，
+# 原属早期 RWA / DEX 原型阶段功能。当前项目定位为
+# "分布式光伏 MRV 可信数据底座"，仅保留数据采集、签名、存证、
+# 可视化看板基础数据 API。停用代码仅作历史留痕，不会被路由注册。
+# ============================================================================
 
 import os
 import sys
@@ -150,53 +158,48 @@ def get_dashboard_summary():
 
 
 # -------------------------------------------------------------------------
-# API: 资产余额 (Token Balances)
+# API: 资产余额 (Token Balances) — DEPRECATED
 # -------------------------------------------------------------------------
 
-@app.route('/api/wallet/balances', methods=['GET'])
-def get_balances():
-    """获取指定地址的代币余额 (使用底层 json-rpc call，不走 relay)"""
-    address = request.args.get('address')
-    if not address:
-        return jsonify({"success": False, "error": "Address is required"}), 400
-        
-    try:
-        # 这里为了简化快速响应，实际上应该封装一个 ERC20 `balanceOf` 请求到 ChainClient
-        # 考虑到目前 chain_client 尚未添加通用 ABI Call 函数，我们先 mock 这个数据
-        # 实际生产中:
-        # slg_balance = chain.call_erc20(config.SOLAR_TOKEN_ADDR, "balanceOf", address)
-        
-        return jsonify({
-            "success": True,
-            "data": {
-                "slg": 12.5,  # 模拟 12.5 个绿电积分
-                "musd": 100.0 # 模拟 100 稳定币
-            }
-        })
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
+# DEPRECATED 2026-02: 合规重构，已停用。原属早期 RWA / DEX 模块，不再对外提供。
+# @app.route('/api/wallet/balances', methods=['GET'])
+# def get_balances():
+#     """获取指定地址的代币余额 (使用底层 json-rpc call，不走 relay)"""
+#     address = request.args.get('address')
+#     if not address:
+#         return jsonify({"success": False, "error": "Address is required"}), 400
+#
+#     try:
+#         return jsonify({
+#             "success": True,
+#             "data": {
+#                 "slg": 12.5,
+#                 "musd": 100.0
+#             }
+#         })
+#     except Exception as e:
+#         return jsonify({"success": False, "error": str(e)}), 500
 
 
 # -------------------------------------------------------------------------
-# API: DEX 交易 (写入操作)
+# API: DEX 交易 (写入操作) — DEPRECATED
 # -------------------------------------------------------------------------
 
-@app.route('/api/dex/buy', methods=['POST'])
-def buy_slg():
-    """调用 SolarRWA 的 buyGreenTokens 进行去中心化兑换"""
-    data = request.json or {}
-    slg_amount = data.get('amount')
-    
-    if not slg_amount:
-         return jsonify({"success": False, "error": "Amount is required"}), 400
-         
-    # 在真实环境中，这里应该将用户的交易通过 Relay 转发到 FISCO-BCOS。
-    # 由于云端 Relay 目前遇到 ssh 阻塞，此处做 Mock 成功反馈，以便前端 UI 可交互。
-    return jsonify({
-        "success": True, 
-        "message": f"Successfully purchased {slg_amount} SLG",
-        "tx_hash": "0xabc123def456mockedhash0000000000000000"
-    })
+# DEPRECATED 2026-02: 合规重构，已停用。原属早期 RWA / DEX 模块，不再对外提供。
+# @app.route('/api/dex/buy', methods=['POST'])
+# def buy_slg():
+#     """调用 SolarRWA 的 buyGreenTokens 进行去中心化兑换"""
+#     data = request.json or {}
+#     slg_amount = data.get('amount')
+#
+#     if not slg_amount:
+#          return jsonify({"success": False, "error": "Amount is required"}), 400
+#
+#     return jsonify({
+#         "success": True,
+#         "message": f"Successfully purchased {slg_amount} SLG",
+#         "tx_hash": "0xabc123def456mockedhash0000000000000000"
+#     })
 
 
 if __name__ == '__main__':
