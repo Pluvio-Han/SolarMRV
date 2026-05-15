@@ -1,0 +1,169 @@
+2026/2/19 23:07                                                 SolarGuard Project Report
+
+
+
+
+                  SolarGuard:                    分布式光伏 RWA 资产上
+                                                  链系统
+                                            项目总结与优化报告
+
+
+
+
+                               绿链 未 来 ( G RE EN CH A IN F UT UR E)
+
+
+                                                      作者：Evan Han
+                                                 日期：2026年02月19日
+
+
+
+
+file:///Users/evanhan/项目/光伏项目/项目总结报告内容/project_report_v5.html                               1/5
+2026/2/19 23:07                                                                       SolarGuard Project Report
+
+
+
+
+             1.    项目概览
+             本项目旨在构建一套高可靠、去中心化的光伏能源监控系统。系统通过 RS485 接口实
+             时采集光伏控制器的核心数据（电压、功率、累计发电量），利用国密 SM2 算法进行
+             数字签名，并通过安全加密隧道将数据存证至由全球多点部署的 FISCO-BCOS 联盟链
+             上，实现数据的不可篡改与永久追溯。
+
+
+             2.    技术架构全景图
+             2.1    前端采集架构 (Frontend Acquisition)
+                                       ☀️ 硬件层 (现场)
+                   光伏组件       DC 12V
+                                                                                                                     💻 软件层 (Python)
+                                                         RS485   Mac mini (   终端)     Modbus
+                  蓄电池 (72%)            EPEVER   控制器                                             SolarMonitor   Raw Data   AutoMonitor   SM2   签名 国密模块
+
+                  负载 (灯泡)
+
+
+
+             (数据经由 SSH 安全隧道传输至后端)
+
+
+             2.2    后端上链架构 (Backend Blockchain)
+                                🌐 安全传输层                                                               ⛓️ FISCO-BCOS 联盟链
+                                                                                                           PBFT 共识节点
+
+                               SSH Tunnel   Relay     通道 :5555                 Relay Service                                 Miles
+
+
+
+                  上链客户端        SSH Tunnel       RPC   通道 :8545                                      Gwen (Master)            Peter
+
+
+
+
+                                                                                                                           智能合约                分布式账本
+
+
+
+             2.1    关键配置参数
+                      智能合约地址: 0xf5a9bb3817e8a2f7de1adfbebff27cb540a7d5e2
+                      上链账户地址: 0x4a8d475c38c355734dcb786cd9be43773939b793
+                      加密体系: 国密 SM2 (签名) + SM3 (哈希)
+
+
+
+
+file:///Users/evanhan/项目/光伏项目/项目总结报告内容/project_report_v5.html                                                                                           2/5
+2026/2/19 23:07                                                 SolarGuard Project Report
+
+
+
+
+             3.   项目实施里程碑
+             第一阶段：驱动开发与本地采集
+                    基于 pymodbus 开发了 SolarMonitor 类，实现了对 EPEVER 控制器各项寄存器的
+                    精准读取。
+                    重点攻克了 累计发电量 (Total Generated Energy) 的读取，这是 RWA (现实世界
+                    资产) 最核心的价值凭证。
+
+
+             第二阶段：全球节点部署
+             我们构建了一个跨地域的高可用联盟链网络： 1. Gwen (Master): 部署于腾讯云，承载
+             核心 write 请求。 2. Miles: 部署于腾讯云（异地），作为共识验证节点。 3. Peter: 部署
+             于 DigitalOcean (新加坡)，实现数据的跨境容灾与验证。 所有节点通过 PBFT 共识算法
+             保持数据强一致性。
+
+
+             第三阶段：合约开发与安全上链
+                    开发 Solidity 智能合约 SolarDataStore.sol，定义了不可篡改的数据结构。
+                    实现了 ChainClient Python SDK，并通过 双通道 SSH 隧道 (RPC + Relay) 解决了
+                    云服务器防火墙与本地内网穿透的安全问题。
+
+
+             4.   系统优化与重构 (最新成果)
+             基于初期 8 小时挂机测试的数据反馈，我们进行了深度优化：
+
+
+             4.1   稳定性提升 (P0)
+                    Relay v2: 部署了新版中间件，增加了“控制台唤醒机制”，彻底解决了服务端空响
+                    应导致的丢包问题。
+                    自动重连: 客户端增加了 SSH 隧道状态监测，一旦断连会自动重试，确保 7x24
+                    小时在线。
+                    时间校准: 采样逻辑从“相对休眠”改为“绝对时间调度”，消除了长期运行的采样时
+                    间漂移。
+
+
+             4.2   安全与维护 (P1)
+
+file:///Users/evanhan/项目/光伏项目/项目总结报告内容/project_report_v5.html                               3/5
+2026/2/19 23:07                                                 SolarGuard Project Report
+
+
+
+
+                    配置中心化: 所有密钥、路径、IP 地址统一提取至 config.py，并支持环境变量注
+                    入，杜绝了硬编码的安全隐患。
+                    目录重构: 建立了 data/ (数据), charts/ (图表), utils/ (工具) 的清晰目录结构，
+                    便于长期运维。
+
+
+             4.3   用户体验 (P2)
+                    数据可视化: 优化了 Matplotlib 绘图引擎，支持深色模式，自动生成涵盖 PV/电
+                    池/负载曲线的高清图表。
+                    自动关灯: 增加了脚本退出时的安全钩子，确保测试结束后自动切断负载电源。
+
+
+             5.   最终验证结论
+             于 2026-02-19 执行全流程测试 (full_test.py)，结果如下： - 硬件: 成功读取电压
+             13.04V, SOC 72%。 - 上链: 交易成功确认 (TX Hash: 0x70d54b...)，多节点共识正常。 -
+             通知: Telegram 机器人成功推送图表与数据。
+
+
+             5.1   前端可视化看板 (Web Dashboard)
+
+
+
+
+             (设计预览：基于 Next.js 的实时数据大屏)
+
+
+             5.2   真实挂机数据验证 (8小时/96个数据点)
+
+
+file:///Users/evanhan/项目/光伏项目/项目总结报告内容/project_report_v5.html                               4/5
+2026/2/19 23:07                                                 SolarGuard Project Report
+
+
+
+
+             (于 2026-02-19 完成的连续稳定性测试，共采集 96 个数据点，展示了完整的光照/充放
+             电周期)
+
+
+             项目状态:     ✅ 已完工 | 🚀 就绪可运行 建议后续操作：运行 python3 auto_monitor.py
+             开启正式挂机监控。
+
+
+
+
+file:///Users/evanhan/项目/光伏项目/项目总结报告内容/project_report_v5.html                               5/5
+

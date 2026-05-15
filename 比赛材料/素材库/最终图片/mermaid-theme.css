@@ -1,0 +1,48 @@
+:root {
+  --mermaid-font-family: "PingFang SC", "Microsoft YaHei", "Noto Sans SC", sans-serif;
+}
+svg {
+  background: #ffffff;
+}
+.cluster rect {
+  rx: 12px;
+  ry: 12px;
+  fill: #FAFBFA !important;
+  stroke: #D1D5DB !important;
+  stroke-width: 1.2px !important;
+}
+.cluster-label text {
+  font-weight: 700 !important;
+  fill: #1F2937 !important;
+  font-size: 18px !important;
+}
+.node rect,
+.node polygon,
+.node circle {
+  rx: 10px;
+  ry: 10px;
+}
+.edgeLabel {
+  background-color: #ffffff !important;
+  color: #374151 !important;
+  border: 1px solid #E5E7EB !important;
+  border-radius: 8px !important;
+  padding: 2px 8px !important;
+}
+.edgeLabel p {
+  color: #374151 !important;
+  font-size: 12px !important;
+}
+.label text,
+.nodeLabel,
+.cluster-label {
+  font-size: 15px !important;
+}
+.flowchart-link {
+  stroke: #6B7280 !important;
+  stroke-width: 2px !important;
+}
+.marker {
+  fill: #6B7280 !important;
+  stroke: #6B7280 !important;
+}

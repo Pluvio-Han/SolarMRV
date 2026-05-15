@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="2200" viewBox="0 0 1600 2200">
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+
+<style>
+  .layer-title { font: 700 34px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #1F2937; }
+  .node-text { font: 600 25px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; text-anchor: middle; dominant-baseline: middle; }
+  .connector { stroke: #6B7280; stroke-width: 5; fill: none; stroke-linecap: round; }
+  .layer-box { fill: #FAFBFA; stroke: #D1D5DB; stroke-width: 2.5; }
+</style>
+<defs>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
+    <path d="M 0 0 L 12 6 L 0 12 z" fill="#6B7280" />
+  </marker>
+</defs>
+
+<rect x="80.0" y="40" width="1440" height="180" rx="18" ry="18" class="layer-box"/>
+<text x="800.0" y="68" text-anchor="middle" class="layer-title">设备层</text>
+<rect x="150" y="108" width="320" height="72" rx="16" ry="16" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="3"/>
+<text x="310.0" y="145.0" class="node-text" fill="#123524">分布式光伏面板</text>
+<rect x="640.0" y="108" width="320" height="72" rx="16" ry="16" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="3"/>
+<text x="800.0" y="145.0" class="node-text" fill="#123524">光伏控制器/逆变器</text>
+<rect x="1130" y="108" width="320" height="72" rx="16" ry="16" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="3"/>
+<text x="1290.0" y="145.0" class="node-text" fill="#123524">本地边缘通信总线</text>
+<line x1="470" y1="144.0" x2="640.0" y2="144.0" class="connector"/>
+<line x1="960.0" y1="144.0" x2="1130" y2="144.0" class="connector"/>
+<rect x="80.0" y="325" width="1440" height="180" rx="18" ry="18" class="layer-box"/>
+<text x="800.0" y="353" text-anchor="middle" class="layer-title">采集与可信处理层</text>
+<rect x="150" y="393" width="320" height="72" rx="16" ry="16" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="3"/>
+<text x="310.0" y="430.0" class="node-text" fill="#123524">边缘网关/Python脚本</text>
+<rect x="640.0" y="393" width="320" height="72" rx="16" ry="16" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="3"/>
+<text x="800.0" y="430.0" class="node-text" fill="#123524">数据结构化提取</text>
+<rect x="1130" y="393" width="320" height="72" rx="16" ry="16" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="3"/>
+<text x="1290.0" y="430.0" class="node-text" fill="#123524">SM2/ECDSA 数字签名</text>
+<line x1="470" y1="429.0" x2="640.0" y2="429.0" class="connector"/>
+<line x1="960.0" y1="429.0" x2="1130" y2="429.0" class="connector"/>
+<rect x="80.0" y="610" width="1440" height="180" rx="18" ry="18" class="layer-box"/>
+<text x="800.0" y="638" text-anchor="middle" class="layer-title">可信存证层</text>
+<rect x="150" y="678" width="320" height="72" rx="16" ry="16" fill="#EAF0F8" stroke="#355C8A" stroke-width="3"/>
+<text x="310.0" y="715.0" class="node-text" fill="#17324D">FISCO-BCOS 联盟链节点</text>
+<rect x="640.0" y="678" width="320" height="72" rx="16" ry="16" fill="#EAF0F8" stroke="#355C8A" stroke-width="3"/>
+<text x="800.0" y="715.0" class="node-text" fill="#17324D">存证智能合约</text>
+<rect x="1130" y="678" width="320" height="72" rx="16" ry="16" fill="#EAF0F8" stroke="#355C8A" stroke-width="3"/>
+<text x="1290.0" y="715.0" class="node-text" fill="#17324D">分布式防篡改账本</text>
+<line x1="470" y1="714.0" x2="640.0" y2="714.0" class="connector"/>
+<line x1="960.0" y1="714.0" x2="1130" y2="714.0" class="connector"/>
+<rect x="80.0" y="895" width="1440" height="180" rx="18" ry="18" class="layer-box"/>
+<text x="800.0" y="923" text-anchor="middle" class="layer-title">服务与API层</text>
+<rect x="150" y="963" width="320" height="72" rx="16" ry="16" fill="#EAF0F8" stroke="#355C8A" stroke-width="3"/>
+<text x="310.0" y="1000.0" class="node-text" fill="#17324D">定时监测守护程序</text>
+<rect x="640.0" y="963" width="320" height="72" rx="16" ry="16" fill="#EAF0F8" stroke="#355C8A" stroke-width="3"/>
+<text x="800.0" y="1000.0" class="node-text" fill="#17324D">数据可视化 API</text>
+<rect x="1130" y="963" width="320" height="72" rx="16" ry="16" fill="#EAF0F8" stroke="#355C8A" stroke-width="3"/>
+<text x="1290.0" y="1000.0" class="node-text" fill="#17324D">链上状态与账本 API</text>
+<line x1="470" y1="999.0" x2="640.0" y2="999.0" class="connector"/>
+<line x1="960.0" y1="999.0" x2="1130" y2="999.0" class="connector"/>
+<rect x="80.0" y="1180" width="1440" height="180" rx="18" ry="18" class="layer-box"/>
+<text x="800.0" y="1208" text-anchor="middle" class="layer-title">可视化展示层</text>
+<rect x="150" y="1248" width="320" height="72" rx="16" ry="16" fill="#EEF4FB" stroke="#355C8A" stroke-width="3"/>
+<text x="310.0" y="1285.0" class="node-text" fill="#17324D">前端控制台仪表盘</text>
+<rect x="640.0" y="1248" width="320" height="72" rx="16" ry="16" fill="#EEF4FB" stroke="#355C8A" stroke-width="3"/>
+<text x="800.0" y="1285.0" class="node-text" fill="#17324D">自动监测图表报表</text>
+<rect x="1130" y="1248" width="320" height="72" rx="16" ry="16" fill="#EEF4FB" stroke="#355C8A" stroke-width="3"/>
+<text x="1290.0" y="1285.0" class="node-text" fill="#17324D">项目运行摘要报告</text>
+<line x1="470" y1="1284.0" x2="640.0" y2="1284.0" class="connector"/>
+<line x1="960.0" y1="1284.0" x2="1130" y2="1284.0" class="connector"/>
+<rect x="80.0" y="1465" width="1440" height="180" rx="18" ry="18" class="layer-box"/>
+<text x="800.0" y="1493" text-anchor="middle" class="layer-title">应用场景层</text>
+<rect x="150" y="1533" width="320" height="72" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="3"/>
+<text x="310.0" y="1570.0" class="node-text" fill="#5C3A10">绿证辅助核验</text>
+<rect x="640.0" y="1533" width="320" height="72" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="3"/>
+<text x="800.0" y="1570.0" class="node-text" fill="#5C3A10">ESG 披露支持</text>
+<rect x="1130" y="1533" width="320" height="72" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="3"/>
+<text x="1290.0" y="1570.0" class="node-text" fill="#5C3A10">绿色金融尽调辅助</text>
+<line x1="470" y1="1569.0" x2="640.0" y2="1569.0" class="connector"/>
+<line x1="960.0" y1="1569.0" x2="1130" y2="1569.0" class="connector"/>
+<line x1="800.0" y1="220" x2="800.0" y2="309" class="connector" marker-end="url(#arrow)"/>
+<line x1="800.0" y1="505" x2="800.0" y2="594" class="connector" marker-end="url(#arrow)"/>
+<line x1="800.0" y1="790" x2="800.0" y2="879" class="connector" marker-end="url(#arrow)"/>
+<line x1="800.0" y1="1075" x2="800.0" y2="1164" class="connector" marker-end="url(#arrow)"/>
+<line x1="800.0" y1="1360" x2="800.0" y2="1449" class="connector" marker-end="url(#arrow)"/>
+</svg>

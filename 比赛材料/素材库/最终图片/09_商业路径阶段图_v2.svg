@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1320" viewBox="0 0 1280 1320">
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs>
+  <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto" markerUnits="strokeWidth">
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="#6B7280" opacity="0.95"/>
+  </marker>
+  <style>
+    .title { font: 700 24px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #1F2937; }
+    .subtitle { font: 500 13px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #6B7280; }
+    .stage-title { font: 700 15px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #123524; }
+    .stage-sub { font: 600 13px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #1F2937; }
+    .stage-desc { font: 500 12px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #4B5563; }
+    .output-title { font: 700 14px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #5C3A10; }
+    .output-text { font: 500 12px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #5B4630; }
+    .connector { stroke: #6B7280; stroke-width: 2; fill: none; stroke-linecap: round; marker-end: url(#arrow); }
+  </style>
+</defs>
+<text x="640.0" y="42" text-anchor="middle" class="title">商业路径阶段图</text>
+<text x="640.0" y="70" text-anchor="middle" class="subtitle">SolarGuard 从原型验证到平台化升级的阶段推进路径</text>
+<rect x="70" y="110" width="1140" height="1120" rx="18" ry="18" fill="#FAFBFA" stroke="#D1D5DB" stroke-width="1.8"/>
+<rect x="100" y="180" width="360" height="110" rx="18" ry="18" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.2"/>
+<text x="280.0" y="214" text-anchor="middle" class="stage-title">第一阶段</text>
+<text x="280.0" y="240" text-anchor="middle" class="stage-sub">技术研发与原型验证</text>
+<text x="280.0" y="266" text-anchor="middle" class="stage-desc">打通设备采集、签名、联盟链与前端闭环</text>
+<rect x="820" y="188" width="320" height="94" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2"/>
+<text x="980.0" y="216" text-anchor="middle" class="output-title">阶段产出</text>
+<text x="980.0" y="246" text-anchor="middle" class="output-text">形成原型闭环与技术锚点</text>
+<line x1="460" y1="235" x2="800" y2="235" stroke="#D1D5DB" stroke-width="1.8"/>
+<circle cx="640" cy="235" r="8" fill="#2E6B4F" opacity="0.9"/>
+<line x1="480" y1="235" x2="630" y2="235" class="connector"/>
+<line x1="640" y1="247" x2="640" y2="415" class="connector"/>
+<rect x="100" y="380" width="360" height="110" rx="18" ry="18" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.2"/>
+<text x="280.0" y="414" text-anchor="middle" class="stage-title">第二阶段</text>
+<text x="280.0" y="440" text-anchor="middle" class="stage-sub">比赛立项与材料打磨</text>
+<text x="280.0" y="466" text-anchor="middle" class="stage-desc">形成商业计划书、展示材料与项目定位</text>
+<rect x="820" y="388" width="320" height="94" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2"/>
+<text x="980.0" y="416" text-anchor="middle" class="output-title">阶段产出</text>
+<text x="980.0" y="446" text-anchor="middle" class="output-text">完成材料体系与比赛定位</text>
+<line x1="460" y1="435" x2="800" y2="435" stroke="#D1D5DB" stroke-width="1.8"/>
+<circle cx="640" cy="435" r="8" fill="#2E6B4F" opacity="0.9"/>
+<line x1="480" y1="435" x2="630" y2="435" class="connector"/>
+<line x1="640" y1="447" x2="640" y2="615" class="connector"/>
+<rect x="100" y="580" width="360" height="110" rx="18" ry="18" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.2"/>
+<text x="280.0" y="614" text-anchor="middle" class="stage-title">第三阶段</text>
+<text x="280.0" y="640" text-anchor="middle" class="stage-sub">小范围场景试点</text>
+<text x="280.0" y="666" text-anchor="middle" class="stage-desc">验证真实应用场景中的稳定运行与使用价值</text>
+<rect x="820" y="588" width="320" height="94" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2"/>
+<text x="980.0" y="616" text-anchor="middle" class="output-title">阶段产出</text>
+<text x="980.0" y="646" text-anchor="middle" class="output-text">积累真实试点案例与反馈</text>
+<line x1="460" y1="635" x2="800" y2="635" stroke="#D1D5DB" stroke-width="1.8"/>
+<circle cx="640" cy="635" r="8" fill="#2E6B4F" opacity="0.9"/>
+<line x1="480" y1="635" x2="630" y2="635" class="connector"/>
+<line x1="640" y1="647" x2="640" y2="815" class="connector"/>
+<rect x="100" y="780" width="360" height="110" rx="18" ry="18" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.2"/>
+<text x="280.0" y="814" text-anchor="middle" class="stage-title">第四阶段</text>
+<text x="280.0" y="840" text-anchor="middle" class="stage-sub">模块复制与标准化输出</text>
+<text x="280.0" y="866" text-anchor="middle" class="stage-desc">形成可复用的模块能力与标准化交付包</text>
+<rect x="820" y="788" width="320" height="94" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2"/>
+<text x="980.0" y="816" text-anchor="middle" class="output-title">阶段产出</text>
+<text x="980.0" y="846" text-anchor="middle" class="output-text">沉淀标准化模块与交付能力</text>
+<line x1="460" y1="835" x2="800" y2="835" stroke="#D1D5DB" stroke-width="1.8"/>
+<circle cx="640" cy="835" r="8" fill="#2E6B4F" opacity="0.9"/>
+<line x1="480" y1="835" x2="630" y2="835" class="connector"/>
+<line x1="640" y1="847" x2="640" y2="1015" class="connector"/>
+<rect x="100" y="980" width="360" height="110" rx="18" ry="18" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.2"/>
+<text x="280.0" y="1014" text-anchor="middle" class="stage-title">第五阶段</text>
+<text x="280.0" y="1040" text-anchor="middle" class="stage-sub">平台化升级</text>
+<text x="280.0" y="1066" text-anchor="middle" class="stage-desc">向绿证、ESG 与绿色金融辅助场景延伸</text>
+<rect x="820" y="988" width="320" height="94" rx="16" ry="16" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2"/>
+<text x="980.0" y="1016" text-anchor="middle" class="output-title">阶段产出</text>
+<text x="980.0" y="1046" text-anchor="middle" class="output-text">拓展高价值应用场景与合作空间</text>
+<line x1="460" y1="1035" x2="800" y2="1035" stroke="#D1D5DB" stroke-width="1.8"/>
+<circle cx="640" cy="1035" r="8" fill="#2E6B4F" opacity="0.9"/>
+<line x1="480" y1="1035" x2="630" y2="1035" class="connector"/>
+</svg>

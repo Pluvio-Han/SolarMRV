@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="1820" viewBox="0 0 1280 1820">
+<rect width="100%" height="100%" fill="#FFFFFF"/>
+<defs>
+  <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto" markerUnits="strokeWidth">
+    <path d="M 0 0 L 9 4.5 L 0 9 z" fill="#6B7280" opacity="0.95"/>
+  </marker>
+  <style>
+    .layer-box { fill: #FAFBFA; stroke: #D1D5DB; stroke-width: 1.8; }
+    .layer-title { font: 700 17px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; fill: #1F2937; }
+    .node-label { font: 600 13px 'PingFang SC','Microsoft YaHei','Noto Sans SC',sans-serif; text-anchor: middle; dominant-baseline: middle; }
+    .connector { stroke: #6B7280; stroke-width: 2; fill: none; stroke-linecap: round; }
+    .vertical { stroke: #6B7280; stroke-width: 2; fill: none; stroke-linecap: round; marker-end: url(#arrow); }
+  </style>
+</defs>
+<rect x="45" y="18" width="1190" height="155" rx="16" ry="16" class="layer-box"/>
+<text x="640.0" y="40" text-anchor="middle" class="layer-title">设备层</text>
+<rect x="195.0" y="84" width="250" height="62" rx="13" ry="13" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.1"/>
+<text x="320.0" y="116.0" class="node-label" fill="#123524">分布式光伏面板</text>
+<rect x="515.0" y="84" width="250" height="62" rx="13" ry="13" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.1"/>
+<text x="640.0" y="116.0" class="node-label" fill="#123524">光伏控制器/逆变器</text>
+<rect x="835.0" y="84" width="250" height="62" rx="13" ry="13" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.1"/>
+<text x="960.0" y="116.0" class="node-label" fill="#123524">本地边缘通信总线</text>
+<line x1="445.0" y1="115.0" x2="515.0" y2="115.0" class="connector"/>
+<line x1="765.0" y1="115.0" x2="835.0" y2="115.0" class="connector"/>
+<line x1="640.0" y1="173.0" x2="640.0" y2="233.0" class="vertical"/>
+<rect x="45" y="245" width="1190" height="155" rx="16" ry="16" class="layer-box"/>
+<text x="640.0" y="267" text-anchor="middle" class="layer-title">采集与可信处理层</text>
+<rect x="195.0" y="311" width="250" height="62" rx="13" ry="13" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.1"/>
+<text x="320.0" y="343.0" class="node-label" fill="#123524">边缘网关/Python脚本</text>
+<rect x="515.0" y="311" width="250" height="62" rx="13" ry="13" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.1"/>
+<text x="640.0" y="343.0" class="node-label" fill="#123524">数据结构化提取</text>
+<rect x="835.0" y="311" width="250" height="62" rx="13" ry="13" fill="#E8F3EC" stroke="#2E6B4F" stroke-width="2.1"/>
+<text x="960.0" y="343.0" class="node-label" fill="#123524">SM2/ECDSA 数字签名</text>
+<line x1="445.0" y1="342.0" x2="515.0" y2="342.0" class="connector"/>
+<line x1="765.0" y1="342.0" x2="835.0" y2="342.0" class="connector"/>
+<line x1="640.0" y1="400.0" x2="640.0" y2="460.0" class="vertical"/>
+<rect x="45" y="472" width="1190" height="155" rx="16" ry="16" class="layer-box"/>
+<text x="640.0" y="494" text-anchor="middle" class="layer-title">可信存证层</text>
+<rect x="195.0" y="538" width="250" height="62" rx="13" ry="13" fill="#EAF0F8" stroke="#355C8A" stroke-width="2.1"/>
+<text x="320.0" y="570.0" class="node-label" fill="#17324D">FISCO-BCOS 联盟链节点</text>
+<rect x="515.0" y="538" width="250" height="62" rx="13" ry="13" fill="#EAF0F8" stroke="#355C8A" stroke-width="2.1"/>
+<text x="640.0" y="570.0" class="node-label" fill="#17324D">存证智能合约</text>
+<rect x="835.0" y="538" width="250" height="62" rx="13" ry="13" fill="#EAF0F8" stroke="#355C8A" stroke-width="2.1"/>
+<text x="960.0" y="570.0" class="node-label" fill="#17324D">分布式防篡改账本</text>
+<line x1="445.0" y1="569.0" x2="515.0" y2="569.0" class="connector"/>
+<line x1="765.0" y1="569.0" x2="835.0" y2="569.0" class="connector"/>
+<line x1="640.0" y1="627.0" x2="640.0" y2="687.0" class="vertical"/>
+<rect x="45" y="699" width="1190" height="155" rx="16" ry="16" class="layer-box"/>
+<text x="640.0" y="721" text-anchor="middle" class="layer-title">服务与API层</text>
+<rect x="195.0" y="765" width="250" height="62" rx="13" ry="13" fill="#EEF4FB" stroke="#355C8A" stroke-width="2.1"/>
+<text x="320.0" y="797.0" class="node-label" fill="#17324D">定时监测守护程序</text>
+<rect x="515.0" y="765" width="250" height="62" rx="13" ry="13" fill="#EEF4FB" stroke="#355C8A" stroke-width="2.1"/>
+<text x="640.0" y="797.0" class="node-label" fill="#17324D">数据可视化 API</text>
+<rect x="835.0" y="765" width="250" height="62" rx="13" ry="13" fill="#EEF4FB" stroke="#355C8A" stroke-width="2.1"/>
+<text x="960.0" y="797.0" class="node-label" fill="#17324D">链上状态与账本 API</text>
+<line x1="445.0" y1="796.0" x2="515.0" y2="796.0" class="connector"/>
+<line x1="765.0" y1="796.0" x2="835.0" y2="796.0" class="connector"/>
+<line x1="640.0" y1="854.0" x2="640.0" y2="914.0" class="vertical"/>
+<rect x="45" y="926" width="1190" height="155" rx="16" ry="16" class="layer-box"/>
+<text x="640.0" y="948" text-anchor="middle" class="layer-title">可视化展示层</text>
+<rect x="195.0" y="992" width="250" height="62" rx="13" ry="13" fill="#EEF4FB" stroke="#355C8A" stroke-width="2.1"/>
+<text x="320.0" y="1024.0" class="node-label" fill="#17324D">前端控制台仪表盘</text>
+<rect x="515.0" y="992" width="250" height="62" rx="13" ry="13" fill="#EEF4FB" stroke="#355C8A" stroke-width="2.1"/>
+<text x="640.0" y="1024.0" class="node-label" fill="#17324D">自动监测图表报表</text>
+<rect x="835.0" y="992" width="250" height="62" rx="13" ry="13" fill="#EEF4FB" stroke="#355C8A" stroke-width="2.1"/>
+<text x="960.0" y="1024.0" class="node-label" fill="#17324D">项目运行摘要报告</text>
+<line x1="445.0" y1="1023.0" x2="515.0" y2="1023.0" class="connector"/>
+<line x1="765.0" y1="1023.0" x2="835.0" y2="1023.0" class="connector"/>
+<line x1="640.0" y1="1081.0" x2="640.0" y2="1141.0" class="vertical"/>
+<rect x="45" y="1153" width="1190" height="155" rx="16" ry="16" class="layer-box"/>
+<text x="640.0" y="1175" text-anchor="middle" class="layer-title">应用场景层</text>
+<rect x="195.0" y="1219" width="250" height="62" rx="13" ry="13" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2.1"/>
+<text x="320.0" y="1251.0" class="node-label" fill="#5C3A10">绿证辅助核验</text>
+<rect x="515.0" y="1219" width="250" height="62" rx="13" ry="13" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2.1"/>
+<text x="640.0" y="1251.0" class="node-label" fill="#5C3A10">ESG 披露支持</text>
+<rect x="835.0" y="1219" width="250" height="62" rx="13" ry="13" fill="#F7F3EA" stroke="#A46A1F" stroke-width="2.1"/>
+<text x="960.0" y="1251.0" class="node-label" fill="#5C3A10">绿色金融尽调辅助</text>
+<line x1="445.0" y1="1250.0" x2="515.0" y2="1250.0" class="connector"/>
+<line x1="765.0" y1="1250.0" x2="835.0" y2="1250.0" class="connector"/>
+</svg>

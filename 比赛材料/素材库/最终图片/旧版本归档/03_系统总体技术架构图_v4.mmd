@@ -1,0 +1,65 @@
+flowchart TB
+    subgraph L1[设备层]
+        direction LR
+        A1[分布式光伏面板]
+        A2[光伏控制器/逆变器]
+        A3[本地边缘通信总线]
+    end
+
+    subgraph L2[采集与可信处理层]
+        direction LR
+        B1[边缘网关/Python脚本]
+        B2[数据结构化提取]
+        B3[SM2/ECDSA 数字签名]
+    end
+
+    subgraph L3[可信存证层]
+        direction LR
+        C1[FISCO-BCOS 联盟链节点]
+        C2[存证智能合约]
+        C3[分布式防篡改账本]
+    end
+
+    subgraph L4[服务与API层]
+        direction LR
+        D1[定时监测守护程序]
+        D2[数据可视化 API]
+        D3[链上状态与账本 API]
+    end
+
+    subgraph L5[可视化展示层]
+        direction LR
+        E1[前端控制台仪表盘]
+        E2[自动监测图表报表]
+        E3[项目运行摘要报告]
+    end
+
+    subgraph L6[应用场景层]
+        direction LR
+        F1[绿证辅助核验]
+        F2[ESG 披露支持]
+        F3[绿色金融尽调辅助]
+    end
+
+    A1 --- A2 --- A3
+    B1 --- B2 --- B3
+    C1 --- C2 --- C3
+    D1 --- D2 --- D3
+    E1 --- E2 --- E3
+    F1 --- F2 --- F3
+
+    L1 -->|RS485 / Modbus 物理协议| L2
+    L2 -->|签名后可验证 JSON 数据| L3
+    L3 -->|安全数据状态同步| L4
+    L4 -->|HTTP / REST 接口调用| L5
+    L5 -->|可信依据输出| L6
+
+    classDef device fill:#E8F3EC,stroke:#2E6B4F,stroke-width:1.5px,color:#123524;
+    classDef chain fill:#EAF0F8,stroke:#355C8A,stroke-width:1.5px,color:#17324D;
+    classDef app fill:#F7F3EA,stroke:#A46A1F,stroke-width:1.5px,color:#5C3A10;
+    classDef service fill:#EEF4FB,stroke:#355C8A,stroke-width:1.5px,color:#17324D;
+
+    class A1,A2,A3,B1,B2,B3 device;
+    class C1,C2,C3,D1,D2,D3 chain;
+    class E1,E2,E3 service;
+    class F1,F2,F3 app;
