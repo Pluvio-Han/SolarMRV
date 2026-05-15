@@ -101,33 +101,49 @@ graph LR
 ```
 光伏项目/
 ├── README.md                       # 本文件
-├── solar_monitor.py                # 光伏数据采集主程序
+├── LICENSE                         # MIT 协议
+├── SECURITY.md                     # 安全策略与合规边界
+├── requirements.txt                # Python 依赖清单
+├── .env.example                    # 环境变量模板
+├── pytest.ini                      # 测试配置
+│
+├── solar_monitor.py                # 光伏数据采集 + SM2 签名
 ├── auto_monitor.py                 # 自动监测守护进程
-├── chain_client.py                 # 联盟链客户端
+├── chain_client.py                 # FISCO-BCOS 联盟链客户端
 ├── chain_relay_v2.py               # 链上数据上传中继
 ├── wallet_manager.py               # 密钥管理
 ├── telegram_notify.py              # 告警通知
-├── config.py                       # 系统配置
+├── config.py                       # 系统配置（从 .env 读取）
+│
 ├── api/                            # 后端 API 服务
-├── contracts/                      # 在用智能合约
+│   └── app.py                      # Flask 入口
+├── contracts/                      # 智能合约
 │   ├── SolarDataStore.sol          # 纯数据存证合约（在用）
-│   └── deprecated/                 # 早期原型合约（已停用，仅作留痕）
-├── data/                           # 采集数据
+│   ├── SolarDataStore.abi
+│   └── deprecated/                 # 早期 RWA 合约（已停用归档）
+│
+├── data/                           # 采集 CSV 数据（wallets/ 已 gitignore）
 ├── assets/                         # README 引用图片
+│   └── deprecated/                 # 旧 RWA 前端截图归档
 ├── charts/                         # 监测图表输出
-├── scripts/                        # 运维脚本
-├── tests/                          # 测试脚本
-├── utils/                          # 辅助工具
-├── reports/                        # 报告导出
 ├── logs/                           # 运行日志
+│
+├── scripts/                        # 人工执行的辅助脚本
+│   └── chain-ops/                  # FISCO-BCOS 节点运维 shell 脚本
+├── tests/                          # pytest 测试
+│   ├── conftest.py
+│   └── deprecated/                 # 早期 RWA/DEX 测试归档
+├── utils/                          # 工具脚本（extract_pdf / debug_load / deploy_chain_cloud）
+│
 ├── 政策资料/                       # 政策、监管、绿证、数字金融资料库
-├── 比赛材料/                       # 比赛申报材料
+├── 比赛材料/                       # 历史比赛申报材料（BP / 视觉规范 / 素材）
 ├── 项目总结报告内容/               # 项目总结与申请材料
 │   └── 历史版本/                   # 早期阶段材料归档
 └── 最新执行计划/                   # 当前对外正式材料（以此为准）
     ├── 01_BP_碳核算MRV调整版.md
     ├── 02_代码与技术执行计划.md
     ├── 03_软著与专利申请执行计划.md
+    ├── 04_国省级大创提交清单与时间表.md
     ├── 05_国省级大创项目申请书_创业训练项目_正文稿.md
     ├── 06_国省级大创项目申请书_500字简介草稿.md
     └── 07_05正文写作纲要.md

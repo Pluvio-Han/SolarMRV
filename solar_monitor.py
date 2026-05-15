@@ -164,14 +164,18 @@ class SolarMonitor:
         signature = self.sm2_crypt.sign_with_sm3(canonical_json, func.random_hex(16))
         return signature
 
-    def get_rwa_payload(self):
-        """生成符合 RWA 上链格式的 JSON Payload (中文键名)"""
+    def get_mrv_payload(self):
+        """生成符合 MRV 链上存证格式的 JSON Payload（中文键名）
+
+        MRV = Monitoring–Reporting–Verification（监测—报告—核查）
+        本方法输出经国密 SM2 签名的设备发电数据包，作为后续减排量核算与第三方核查的可信底层证据。
+        """
         raw_data = self.read_realtime_data()
         if not raw_data:
             return None
-        
-        # 1. 核心资产数据 (中文)
-        asset_data = {
+
+        # 1. 核心运行数据（中文键名，便于核查方人工核对）
+        device_data = {
             "累计发电量_千瓦时": raw_data.get('total_energy_generated', 0),
             "当前功率_瓦": raw_data.get('pv_power', 0),
             "当前电流_安": raw_data.get('pv_current', 0.0),
@@ -184,19 +188,24 @@ class SolarMonitor:
         payload = {
             "设备ID": "SOLAR_NODE_001",
             "时间戳": raw_data.get('timestamp'),
-            "资产数据": asset_data,
+            "运行数据": device_data,
             "状态": "运行中" if raw_data.get('pv_voltage', 0) > 5 else "待机"
         }
-        
-        # 3. 生成签名并附加到 Payload
+
+        # 3. 生成 SM2 签名并附加
         signature = self.sign_payload(payload)
         payload['SM2数字签名'] = signature
         payload['设备公钥'] = self.public_key
-        
+
         return json.dumps(payload, indent=2, ensure_ascii=False)
 
+    # 兼容旧调用名：转发至 get_mrv_payload，等下一次大改时移除
+    def get_rwa_payload(self):  # noqa: D401 — DEPRECATED 别名
+        """DEPRECATED 2026-02：早期命名，请使用 get_mrv_payload()。"""
+        return self.get_mrv_payload()
+
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description='Solar RWA Monitor')
+    parser = argparse.ArgumentParser(description='SolarMRV - 分布式光伏 MRV 数据采集与签名工具')
     parser.add_argument('--simulate', action='store_true', help='开启模拟模式')
     parser.add_argument('--load-on', action='store_true', help='开启负载 (灯泡)')
     parser.add_argument('--load-off', action='store_true', help='关闭负载 (灯泡)')
@@ -222,7 +231,7 @@ if __name__ == "__main__":
                 # 连续读取 3 次测试稳定性
                 for i in range(3):
                     print(f"\n--- 第 {i+1} 次读取 ---")
-                    json_data = monitor.get_rwa_payload()
+                    json_data = monitor.get_mrv_payload()
                     print(json_data)
                     time.sleep(2)
         finally:

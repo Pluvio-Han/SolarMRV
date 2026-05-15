@@ -1,8 +1,17 @@
+# ==========================
+# Python
+# ==========================
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Environments
+# ==========================
+# Virtual Environments
+# ==========================
 .env
 .venv
 env/
@@ -10,18 +19,36 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
-# Environment Variables
 .env_file
+.env.local
 
-# Logs
+# ==========================
+# Secrets & Wallets（绝不提交到公开仓库）
+# ==========================
+keystore/
+data/wallets/
+*.json.bak
+*.pem
+*.key
+*_private*.txt
+
+# ==========================
+# Logs & 临时输出
+# ==========================
 *.log
 logs/
 
-# Secrets (DO NOT PUSH KEYS)
-keystore/
-*.json.bak
-
-# Mac DS_Store
+# ==========================
+# OS / Editor
+# ==========================
 .DS_Store
 *.Rhistory
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ==========================
+# 实验数据保留（保留 data/ 但排除 wallets 子目录见上）
+# ==========================
+# data/  # 不忽略整个 data，因为采集 CSV 是实验证据
