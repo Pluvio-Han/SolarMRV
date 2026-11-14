@@ -38,12 +38,12 @@ INTERVAL_MINUTES = 5
 #                    敏感密钥 (优先环境变量)
 # ============================================================
 # Telegram Bot
-TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "8455087751:AAEycX3BEurx2oiBaVKFKmbZndNRxb1heBU")
-TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "8425455901")
+TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
+TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 
-# SM2 密钥对 (测试用固定密钥，生产环境请务必通过环境变量注入)
-SM2_PRIVATE_KEY = os.environ.get("SM2_PRIVATE_KEY", "00B9AB0B828FF68872F21A837FC303668428DEA11DCD1B24429D0C99E24EED83D5")
-SM2_PUBLIC_KEY = os.environ.get("SM2_PUBLIC_KEY", "B9C9A6E04E9C91F7BA880429273747D7EF5DDEB0BB2FF6317EB00BEF331A83081A6994B8993F3F5D6EADDDB81872266C87C018FB4162F5AF347B483E2465E99E")
+# SM2 密钥对（通过环境变量注入，未配置时保持为空）
+SM2_PRIVATE_KEY = os.environ.get("SM2_PRIVATE_KEY", "")
+SM2_PUBLIC_KEY = os.environ.get("SM2_PUBLIC_KEY", "")
 
 # ============================================================
 #                    区块链配置
