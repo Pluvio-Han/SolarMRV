@@ -8,7 +8,13 @@ SolarMRV 聚焦分布式光伏运行数据的来源证明、过程留痕和独�
 
 当前已形成光伏控制器采集、SM2 数字签名、数据上链、历史查询、自动监测与可视化的原型链路，并保留连续运行数据和实验图表。MRV 核算与第三方核查是这一数据底座的延伸方向，正在围绕核算参数版本、签名复核和接口化交付继续完善。
 
-[实验数据](data/solar_data_20260219_1121.csv) · [采集与签名](solar_monitor.py) · [数据合约](contracts/SolarDataStore.sol) · [技术路线](最新执行计划/02_代码与技术执行计划.md)
+[实验数据](data/solar_data_20260219_1121.csv) · [采集与签名](solar_monitor.py) · [数据合约](contracts/SolarDataStore.sol) · [技术路线](docs/roadmap.md) · [项目简介 PDF](docs/SolarMRV项目介绍.pdf)
+
+## 硬件实验现场
+
+![光伏板与数据采集设备联调现场](assets/solar_hardware_setup.jpg)
+
+实验装置包括太阳能光伏板、MPPT 控制器、蓄电池、灯泡负载与采集终端。控制器通过 RS485 / Modbus 提供物理指标，采集程序完成记录、签名与链上同步联调。
 
 ## 项目解决的问题
 
@@ -191,11 +197,12 @@ python auto_monitor.py
 ## 项目资料
 
 - [连续监测数据](data/)与[运行图表](charts/)
-- [技术执行计划](最新执行计划/02_代码与技术执行计划.md)
+- [技术路线与模块状态](docs/roadmap.md)
+- [项目简介 PDF](docs/SolarMRV项目介绍.pdf)
 - [辅助脚本说明](scripts/README.md)
 - [安全说明](SECURITY.md)
 
-更多研究与历史项目材料保存在相应文档目录；当前技术状态以本页和对应源代码为准。
+技术状态以本页、技术路线和对应源代码为准。
 
 ## 开源与交流
 

@@ -1,0 +1,6 @@
+# Keep document and image artifacts out of text diffs.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
